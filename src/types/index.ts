@@ -5,6 +5,9 @@ export type CompanyFinancials = {
   market_cap_currency: string | null;
   cash_value: number | null;
   enterprise_value_value: number | null;
+  cash_currency: string | null;
+  enterprise_value_currency: string | null;
+  debt_value: number | null;
   // Add ALL other financials fields you select in page.tsx
 };
 

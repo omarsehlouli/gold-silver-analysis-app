@@ -44,7 +44,15 @@ interface RawCompanyData {
 }
 
 // Define the structure for the default objects more explicitly, matching CompanyData structure
-const defaultFinancials: CompanyData['financials'] = { market_cap_value: null, market_cap_currency: null, cash_value: null, enterprise_value_value: null, debt_value: null };
+const defaultFinancials: CompanyData['financials'] = { 
+  market_cap_value: null, 
+  market_cap_currency: null, 
+  cash_value: null, 
+  cash_currency: null,
+  enterprise_value_value: null, 
+  enterprise_value_currency: null,
+  debt_value: null 
+};
 const defaultMineralEstimates: CompanyData['mineral_estimates'] = { reserves_total_aueq_moz: null, resources_total_aueq_moz: null };
 const defaultProduction: CompanyData['production'] = { current_production_total_aueq_koz: null };
 const defaultCosts: CompanyData['costs'] = { aisc_last_year: null, aisc_last_year_currency: null };
@@ -148,7 +156,6 @@ export default function CompaniesPage() {
     const fetchCompanies = async () => {
       setIsLoading(true);
       setError(null);
-      setRawData([]); // Clear previous raw data
       setFormattedData([]); // Clear previous formatted data
 
       try {
