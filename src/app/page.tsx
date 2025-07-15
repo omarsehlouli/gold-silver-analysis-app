@@ -1,6 +1,5 @@
 // src/app/page.tsx
 import Link from 'next/link'; // Import Link for navigation
-import Image from 'next/image'; // Keep Image if you want logos/icons
 
 export default function Home() {
   return (

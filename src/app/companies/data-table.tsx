@@ -1,14 +1,13 @@
 // src/app/companies/data-table.tsx
 'use client';
 
-import React, { useState, useRef, useMemo, useEffect } from 'react'; // Added useEffect
+import React, { useState, useRef } from 'react';
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   getFilteredRowModel,
-  getPaginationRowModel, // Keep for potential future use
   ColumnFiltersState,
   SortingState,
   VisibilityState,

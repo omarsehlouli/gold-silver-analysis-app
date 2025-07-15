@@ -1,7 +1,7 @@
 // src/app/companies/columns.tsx
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Column } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'; // Icons
 
 import { Button } from '@/components/ui/button';
@@ -21,8 +21,8 @@ import { CompanyData } from '@/types'; // Your data types (ensure path is correc
 import { formatNumber, formatCurrency } from '@/lib/utils';
 
 // Helper function to create a sortable header
-const createSortableHeader = (label: string): ColumnDef<CompanyData>['header'] =>
-  ({ column }) => {
+const createSortableHeader = (label: string): ColumnDef<CompanyData>['header'] => {
+  const SortableHeaderComponent = ({ column }: { column: Column<CompanyData> }) => {
     return (
       <Button
         variant="ghost"
@@ -34,10 +34,13 @@ const createSortableHeader = (label: string): ColumnDef<CompanyData>['header'] =
       </Button>
     );
   };
+  SortableHeaderComponent.displayName = 'SortableHeaderComponent';
+  return SortableHeaderComponent;
+};
 
 // Helper function for formatting numbers in cells
-const formatNumericCell = (accessorFn: (row: CompanyData) => number | null | undefined, decimals = 0): ColumnDef<CompanyData>['cell'] =>
-  ({ row }) => {
+const formatNumericCell = (accessorFn: (row: CompanyData) => number | null | undefined, decimals = 0): ColumnDef<CompanyData>['cell'] => {
+  const NumericCellComponent = ({ row }: { row: { original: CompanyData } }) => {
     const value = accessorFn(row.original);
      // --- DEBUG LOG (Remove later) ---
      // if (accessorFn.toString().includes('resources_total_aueq_moz')) { // Example specific log
@@ -46,14 +49,17 @@ const formatNumericCell = (accessorFn: (row: CompanyData) => number | null | und
      // --- END DEBUG LOG ---
     return <div className="text-right tabular-nums pr-2">{formatNumber(value, decimals)}</div>; // Added padding-right
   };
+  NumericCellComponent.displayName = 'NumericCellComponent';
+  return NumericCellComponent;
+};
 
 // Helper function for formatting currency in cells
 const formatCurrencyCell = (
    valueAccessor: (row: CompanyData) => number | null | undefined,
    currencyAccessor: (row: CompanyData) => string | null | undefined,
    defaultCurrency = 'USD'
-): ColumnDef<CompanyData>['cell'] =>
-  ({ row }) => {
+): ColumnDef<CompanyData>['cell'] => {
+  const CurrencyCellComponent = ({ row }: { row: { original: CompanyData } }) => {
     const value = valueAccessor(row.original);
     const currencyCode = currencyAccessor(row.original) || defaultCurrency;
     const displayCurrency = currencyCode?.toUpperCase() || 'USD';
@@ -64,6 +70,9 @@ const formatCurrencyCell = (
      // --- END DEBUG LOG ---
     return <div className="text-right tabular-nums pr-2">{formatCurrency(value, displayCurrency)}</div>; // Added padding-right
   };
+  CurrencyCellComponent.displayName = 'CurrencyCellComponent';
+  return CurrencyCellComponent;
+};
 
 
 // Define the columns for your table

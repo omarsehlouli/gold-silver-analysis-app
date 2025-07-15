@@ -10,6 +10,39 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // 
 import { Skeleton } from "@/components/ui/skeleton"; // Shadcn Skeleton for loading
 import { Terminal } from "lucide-react"; // Icon for Alert
 
+// Define type for raw Supabase response data
+interface RawCompanyData {
+  company_id: number;
+  tsx_code: string;
+  company_name: string;
+  status: string;
+  headquarters: string;
+  financials?: Array<{
+    market_cap_value?: number | null;
+    market_cap_currency?: string | null;
+    cash_value?: number | null;
+    cash_currency?: string | null;
+    enterprise_value_value?: number | null;
+    enterprise_value_currency?: string | null;
+    debt_value?: number | null;
+  }>;
+  mineral_estimates?: Array<{
+    reserves_total_aueq_moz?: number | null;
+    resources_total_aueq_moz?: number | null;
+  }>;
+  production?: Array<{
+    current_production_total_aueq_koz?: number | null;
+  }>;
+  costs?: Array<{
+    aisc_last_year?: number | null;
+    aisc_last_year_currency?: string | null;
+  }>;
+  valuation_metrics?: Array<{
+    mkt_cap_per_resource_oz_all?: number | null;
+    ev_per_resource_oz_all?: number | null;
+  }>;
+}
+
 // Define the structure for the default objects more explicitly, matching CompanyData structure
 const defaultFinancials: CompanyData['financials'] = { market_cap_value: null, market_cap_currency: null, cash_value: null, enterprise_value_value: null, debt_value: null };
 const defaultMineralEstimates: CompanyData['mineral_estimates'] = { reserves_total_aueq_moz: null, resources_total_aueq_moz: null };
@@ -53,7 +86,6 @@ const SELECT_QUERY = `
 
 
 export default function CompaniesPage() {
-  const [rawData, setRawData] = useState<any[]>([]); // Store raw fetched data
   const [formattedData, setFormattedData] = useState<CompanyData[]>([]); // Store processed data for table
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +93,7 @@ export default function CompaniesPage() {
 
   // Function to format the raw data fetched from Supabase
   // Applies the fix for nested arrays and ensures type consistency
-  const formatFetchedData = useCallback((rawData: any[]): CompanyData[] => {
+  const formatFetchedData = useCallback((rawData: RawCompanyData[]): CompanyData[] => {
     return rawData?.map((company): CompanyData => {
         // Access the first element of related arrays, or use default object
         const financialsData = company.financials?.[0];
@@ -131,7 +163,6 @@ export default function CompaniesPage() {
         }
 
         if (companiesData) {
-          setRawData(companiesData); // Store raw data
           const processedData = formatFetchedData(companiesData); // Format the data
           setFormattedData(processedData); // Set formatted data for the table
 
@@ -148,16 +179,16 @@ export default function CompaniesPage() {
           setFormattedData([]); // Ensure empty array if no data
         }
 
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
         console.error('Error fetching or processing company data:', err);
-        setError(`Failed to load company data. ${err.message || 'Unknown error'}. See console.`);
+        setError(`Failed to load company data. ${errorMessage}. See console.`);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchCompanies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase, formatFetchedData]); // Include formatFetchedData (stable due to useCallback)
 
   // Render Skeleton Loading state

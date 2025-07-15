@@ -2,25 +2,4 @@
 > gold-silver-analysis-app@0.1.0 lint
 > next lint
 
-
-./src/app/companies/columns.tsx
-25:3  Error: Component definition is missing display name  react/display-name
-40:3  Error: Component definition is missing display name  react/display-name
-56:3  Error: Component definition is missing display name  react/display-name
-
-./src/app/companies/data-table.tsx
-4:35  Error: 'useMemo' is defined but never used.  @typescript-eslint/no-unused-vars
-4:44  Error: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
-11:3  Error: 'getPaginationRowModel' is defined but never used.  @typescript-eslint/no-unused-vars
-
-./src/app/companies/page.tsx
-56:10  Error: 'rawData' is assigned a value but never used.  @typescript-eslint/no-unused-vars
-56:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-64:51  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-151:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
-160:5  Warning: Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps').
-
-./src/app/page.tsx
-3:8  Error: 'Image' is defined but never used.  @typescript-eslint/no-unused-vars
-
-info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+✔ No ESLint warnings or errors
